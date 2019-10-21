@@ -12,3 +12,4 @@ out/
 # IntelliJ files
 *.iml
 .idea/
+build

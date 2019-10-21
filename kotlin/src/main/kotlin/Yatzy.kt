@@ -1,44 +1,19 @@
+class Yatzy(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int) {
 
-class Yatzy(d1: Int, d2: Int, d3: Int, d4: Int, _5: Int) {
+    private var dice = listOf(d1,d2,d3,d4,d5)
 
-    protected var dice: IntArray = IntArray(5)
+	private fun sumOf(side :Int): Int = dice.filter { it == side }.sum()
 
-    init {
-        dice[0] = d1
-        dice[1] = d2
-        dice[2] = d3
-        dice[3] = d4
-        dice[4] = _5
-    }
+	fun fours(): Int = sumOf(4)
 
-    fun fours(): Int {
-        var sum: Int = 0
-        for (at in 0..4) {
-            if (dice[at] == 4) {
-                sum += 4
-            }
-        }
-        return sum
-    }
+    fun fives(): Int = sumOf(5)
 
-    fun fives(): Int {
-        var s = 0
-        var i: Int = 0
-        while (i < dice.size) {
-            if (dice[i] == 5)
-                s = s + 5
-            i++
-        }
-        return s
-    }
+    fun sixes(): Int = sumOf(6)
 
-    fun sixes(): Int {
-        var sum = 0
-        for (at in dice.indices)
-            if (dice[at] == 6)
-                sum = sum + 6
-        return sum
-    }
+
+	private fun pair() {
+
+	}
 
     companion object {
 
@@ -62,56 +37,26 @@ class Yatzy(d1: Int, d2: Int, d3: Int, d4: Int, _5: Int) {
             return 0
         }
 
-        fun ones(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-            var sum = 0
-            if (d1 == 1) sum++
-            if (d2 == 1) sum++
-            if (d3 == 1) sum++
-            if (d4 == 1) sum++
-            if (d5 == 1)
-                sum++
+        fun ones(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int = Yatzy(d1,d2, d3, d4, d5).sumOf(1)
 
-            return sum
-        }
+        fun twos(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int = Yatzy(d1,d2, d3, d4, d5).sumOf(2)
 
-        fun twos(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-            var sum = 0
-            if (d1 == 2) sum += 2
-            if (d2 == 2) sum += 2
-            if (d3 == 2) sum += 2
-            if (d4 == 2) sum += 2
-            if (d5 == 2) sum += 2
-            return sum
-        }
-
-        fun threes(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-            var s: Int = 0
-            if (d1 == 3) s += 3
-            if (d2 == 3) s += 3
-            if (d3 == 3) s += 3
-            if (d4 == 3) s += 3
-            if (d5 == 3) s += 3
-            return s
-        }
+        fun threes(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int = Yatzy(d1,d2, d3, d4, d5).sumOf(3)
 
         fun score_pair(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
-            val counts = IntArray(6)
-            counts[d1 - 1]++
-            counts[d2 - 1]++
-            counts[d3 - 1]++
-            counts[d4 - 1]++
-            counts[d5 - 1]++
-            var at: Int
-            at = 0
-            while (at != 6) {
-                if (counts[6 - at - 1] >= 2)
-                    return (6 - at) * 2
-                at++
-            }
-            return 0
+            //Yatzy(d1, d2, d3, d4, d5).pair()
+			return listOf(d1, d2, d3, d4, d5)
+				.groupBy { it }
+				.mapValues { it.value.size }
+				.toList()
+				.sortedByDescending { it.first }
+				.filter { it.second >= 2 }
+				.map{ it.first * 2}
+				.firstOrNull()?:0
+
         }
 
-        fun two_pair(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
+		fun two_pair(d1: Int, d2: Int, d3: Int, d4: Int, d5: Int): Int {
             val counts = IntArray(6)
             counts[d1 - 1]++
             counts[d2 - 1]++
@@ -134,7 +79,7 @@ class Yatzy(d1: Int, d2: Int, d3: Int, d4: Int, _5: Int) {
                 0
         }
 
-        fun four_of_a_kind(_1: Int, _2: Int, d3: Int, d4: Int, d5: Int): Int {
+		fun four_of_a_kind(_1: Int, _2: Int, d3: Int, d4: Int, d5: Int): Int {
             val tallies: IntArray = IntArray(6)
             tallies[_1 - 1]++
             tallies[_2 - 1]++
